@@ -3,7 +3,7 @@ const { expect } = pkg;
 import hre from "hardhat";
 const { ethers } = hre;
 
-describe("CarbonShare Escrow Lifecycle", function () {
+describe("MEW Escrow Lifecycle", function () {
   let mockUSDC, mockOracle, forestNFT, escrow;
   let deployer, sponsor, worker;
 
@@ -26,8 +26,8 @@ describe("CarbonShare Escrow Lifecycle", function () {
     await forestNFT.waitForDeployment();
 
     // Deploy Escrow
-    const CarbonShareEscrow = await ethers.getContractFactory("CarbonShareEscrow");
-    escrow = await CarbonShareEscrow.deploy(
+    const MEWEscrow = await ethers.getContractFactory("MEWEscrow");
+    escrow = await MEWEscrow.deploy(
       await mockUSDC.getAddress(),
       await mockOracle.getAddress(),
       await forestNFT.getAddress()

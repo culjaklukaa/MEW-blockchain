@@ -4,7 +4,7 @@ const { ethers } = hre;
 async function main() {
   const [deployer, sponsor, worker] = await ethers.getSigners();
 
-  console.log("Starting CarbonShare Lifecycle Simulation...");
+  console.log("Starting MEW Lifecycle Simulation...");
   console.log("------------------------------------------");
   console.log(`Deployer: ${deployer.address}`);
   console.log(`Sponsor: ${sponsor.address}`);
@@ -30,11 +30,11 @@ async function main() {
   const nftAddress = await forestNFT.getAddress();
   console.log(`ForestNFT deployed to: ${nftAddress}`);
 
-  const CarbonShareEscrow = await ethers.getContractFactory("CarbonShareEscrow");
-  const escrow = await CarbonShareEscrow.deploy(usdcAddress, oracleAddress, nftAddress);
+  const MEWEscrow = await ethers.getContractFactory("MEWEscrow");
+  const escrow = await MEWEscrow.deploy(usdcAddress, oracleAddress, nftAddress);
   await escrow.waitForDeployment();
   const escrowAddress = await escrow.getAddress();
-  console.log(`CarbonShareEscrow deployed to: ${escrowAddress}`);
+  console.log(`MEWEscrow deployed to: ${escrowAddress}`);
 
   // Transfer NFT ownership to Escrow
   await forestNFT.transferOwnership(escrowAddress);

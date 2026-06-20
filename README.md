@@ -1,6 +1,6 @@
-# CarbonShare Blockchain (MEW-blockchain)
+# MEW Blockchain (MEW-blockchain)
 
-This repository contains the local Hardhat blockchain ecosystem for the **CarbonShare** Web3 platform. The project simulates a "Pay-by-Performance" environmental funding model using smart contracts, dynamic NFTs (dNFTs), and simulated Oracles.
+This repository contains the local Hardhat blockchain ecosystem for the **MEW** Web3 platform. The project simulates a "Pay-by-Performance" environmental funding model using smart contracts, dynamic NFTs (dNFTs), and simulated Oracles.
 
 ## Architecture
 
@@ -9,7 +9,7 @@ The project consists of four core smart contracts:
 - **`MockUSDC.sol`**: An ERC-20 token used to simulate corporate sponsorship funds.
 - **`MockNDVIOracle.sol`**: A simulated oracle contract that holds and updates NDVI (Normalized Difference Vegetation Index) scores for land parcels, representing real-world satellite data.
 - **`ForestNFT.sol`**: An ERC-721 dynamic NFT contract. Each NFT represents a land parcel, and its metadata state upgrades (e.g., `Planted` -> `Growing` -> `Verified`) based on oracle updates.
-- **`CarbonShareEscrow.sol`**: The core escrow logic. Corporate sponsors lock `MockUSDC` here. Funds are only released to the worker (NFT owner) when the `MockNDVIOracle` confirms the NDVI score has reached the target threshold.
+- **`MEWEscrow.sol`**: The core escrow logic. Corporate sponsors lock `MockUSDC` here. Funds are only released to the worker (NFT owner) when the `MockNDVIOracle` confirms the NDVI score has reached the target threshold.
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ npx hardhat test
 ```
 
 ### Lifecycle Simulation
-You can run a complete simulated lifecycle of the CarbonShare platform, demonstrating:
+You can run a complete simulated lifecycle of the MEW platform, demonstrating:
 1. Minting a new ForestNFT.
 2. A sponsor depositing MockUSDC into escrow with a target NDVI.
 3. Oracle data ingestion.

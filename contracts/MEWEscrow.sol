@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./MockNDVIOracle.sol";
 import "./ForestNFT.sol";
 
-contract CarbonShareEscrow {
+contract MEWEscrow {
     IERC20 public paymentToken;
     MockNDVIOracle public oracle;
     ForestNFT public nftContract;
