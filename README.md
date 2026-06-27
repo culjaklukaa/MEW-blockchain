@@ -1,62 +1,57 @@
-# MEW Blockchain (MEW-blockchain)
+# MEW - Mostar Eco View (Blockchain)
 
-This repository contains the local Hardhat blockchain ecosystem for the **MEW** Web3 platform. The project simulates a "Pay-by-Performance" environmental funding model using smart contracts, dynamic NFTs (dNFTs), and simulated Oracles.
+A decentralized platform for funding and verifying reforestation projects using smart contracts, dynamic Forest NFTs, and simulated satellite NDVI Oracle data — all running on a local Hardhat blockchain with an interactive Next.js frontend.
+
+## Quick Start
+
+```bash
+git clone https://github.com/culjaklukaa/MEW-blockchain.git
+cd MEW-blockchain
+npm install
+npm start
+```
+
+That's it. `npm start` will:
+1. Start a local Hardhat blockchain node on `http://127.0.0.1:8545`
+2. Compile and deploy all smart contracts
+3. Write contract ABIs and addresses to the frontend
+4. Launch the Next.js UI on `http://localhost:3000`
+
+Open **http://localhost:3000** in your browser and interact with the full MEW platform.
 
 ## Architecture
 
-The project consists of four core smart contracts:
+### Smart Contracts (`contracts/`)
+- **`MockUSDC.sol`** — ERC-20 token simulating corporate sponsorship funds
+- **`MockNDVIOracle.sol`** — Simulated oracle pushing satellite NDVI vegetation scores
+- **`ForestNFT.sol`** — ERC-721 dynamic NFT representing land parcels (`Planted` → `Growing` → `Verified`)
+- **`MEWEscrow.sol`** — Escrow logic that locks funds and releases them when NDVI targets are met
 
-- **`MockUSDC.sol`**: An ERC-20 token used to simulate corporate sponsorship funds.
-- **`MockNDVIOracle.sol`**: A simulated oracle contract that holds and updates NDVI (Normalized Difference Vegetation Index) scores for land parcels, representing real-world satellite data.
-- **`ForestNFT.sol`**: An ERC-721 dynamic NFT contract. Each NFT represents a land parcel, and its metadata state upgrades (e.g., `Planted` -> `Growing` -> `Verified`) based on oracle updates.
-- **`MEWEscrow.sol`**: The core escrow logic. Corporate sponsors lock `MockUSDC` here. Funds are only released to the worker (NFT owner) when the `MockNDVIOracle` confirms the NDVI score has reached the target threshold.
+### Frontend (`frontend/`)
+- **Next.js** app connecting to the local blockchain via **ethers.js**
+- Role switching between **Worker** (plants parcels) and **Sponsor** (funds projects)
+- Real-time satellite simulation with animated NDVI progress tracking
+- On-chain activity log showing all blockchain transactions
+
+## Available Commands
+
+| Command | Description |
+|---|---|
+| `npm start` | Launch everything (node + deploy + frontend) |
+| `npm test` | Run smart contract unit tests |
+| `npm run compile` | Compile Solidity contracts |
+| `npm run node` | Start Hardhat node only |
+| `npm run deploy:local` | Deploy contracts to running local node |
+| `npm run frontend` | Start frontend dev server only |
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18+ recommended)
-- npm or yarn
-
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/culjaklukaa/MEW-blockchain.git
-   cd MEW-blockchain
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-## Development & Testing
-
-This project uses **Hardhat** as the development environment.
-
-### Compile Contracts
-```bash
-npx hardhat compile
-```
-
-### Run Tests
-The test suite validates the core escrow logic, ensuring funds cannot be released early and are successfully transferred once the target NDVI is met.
-```bash
-npx hardhat test
-```
-
-### Lifecycle Simulation
-You can run a complete simulated lifecycle of the MEW platform, demonstrating:
-1. Minting a new ForestNFT.
-2. A sponsor depositing MockUSDC into escrow with a target NDVI.
-3. Oracle data ingestion.
-4. Fund release and NFT state upgrade.
-
-Run the simulation script using:
-```bash
-npx hardhat run scripts/simulate.js
-```
+- [Node.js](https://nodejs.org/) (v18+)
+- npm
 
 ## Built With
 
-- [Hardhat](https://hardhat.org/)
-- [Ethers.js v6](https://docs.ethers.org/v6/)
-- [OpenZeppelin Contracts](https://www.openzeppelin.com/contracts)
+- [Hardhat](https://hardhat.org/) — Ethereum development environment
+- [Ethers.js v6](https://docs.ethers.org/v6/) — Blockchain interaction library
+- [OpenZeppelin Contracts](https://www.openzeppelin.com/contracts) — Secure smart contract standards
+- [Next.js](https://nextjs.org/) — React framework for the frontend

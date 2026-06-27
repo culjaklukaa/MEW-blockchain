@@ -187,225 +187,248 @@ export default function Home() {
   };
 
   const renderStateBadge = (state: number, isReleased: boolean) => {
-    if (isReleased || state === 2) return <span className="parcel-state state-verified">Verified</span>;
-    if (state === 1) return <span className="parcel-state state-growing">Growing</span>;
-    return <span className="parcel-state state-planted">Planted</span>;
+    if (isReleased || state === 2) return <span className="parcel-badge badge-verified">Verified</span>;
+    if (state === 1) return <span className="parcel-badge badge-growing">Growing</span>;
+    return <span className="parcel-badge badge-planted">Planted</span>;
   };
 
   return (
-    <div className="app-container">
-      {/* NAVIGATION SIDEBAR */}
-      <aside className="main-sidebar">
-        <div className="brand">
+    <>
+      <header className="top-header">
+        <div className="brand-area animate-in">
           <div className="brand-icon">🌿</div>
-          <div className="brand-title">EcoView</div>
+          <h1 className="brand-title">EcoView</h1>
         </div>
         
-        <nav className="nav-menu">
-          <button className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
-            📊 Dashboard
+        <nav className="nav-menu animate-in" style={{animationDelay: '0.1s'}}>
+          <button className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
+            Dashboard
           </button>
-          <button className={`nav-item ${activeTab === 'plant' ? 'active' : ''}`} onClick={() => setActiveTab('plant')}>
-            🌱 Plant Area
+          <button className={`nav-btn ${activeTab === 'plant' ? 'active' : ''}`} onClick={() => setActiveTab('plant')}>
+            Plant
           </button>
-          <button className={`nav-item ${activeTab === 'fund' ? 'active' : ''}`} onClick={() => setActiveTab('fund')}>
-            💰 Fund Project
+          <button className={`nav-btn ${activeTab === 'fund' ? 'active' : ''}`} onClick={() => setActiveTab('fund')}>
+            Fund
           </button>
-          <button className={`nav-item ${activeTab === 'satellite' ? 'active' : ''}`} onClick={() => setActiveTab('satellite')}>
-            📡 Satellite Readings
+          <button className={`nav-btn ${activeTab === 'satellite' ? 'active' : ''}`} onClick={() => setActiveTab('satellite')}>
+            Satellite
           </button>
         </nav>
-      </aside>
+      </header>
 
-      {/* MAIN CONTENT AREA */}
-      <main className="main-content">
-        <div className="page-header">
-          <h1 className="page-title">
-            {activeTab === 'dashboard' && "Overview"}
-            {activeTab === 'plant' && "Plant & Register Parcel"}
-            {activeTab === 'fund' && "Sponsor a Parcel"}
-            {activeTab === 'satellite' && "Satellite Growth Simulation"}
-          </h1>
-
-          <div className="role-selector">
-            <button 
-              className={`role-pill ${activeRole === 'worker' ? 'active' : ''}`}
-              onClick={() => setActiveRole('worker')}
-            >
-              👷 Worker Account
-            </button>
-            <button 
-              className={`role-pill ${activeRole === 'sponsor' ? 'active' : ''}`}
-              onClick={() => setActiveRole('sponsor')}
-            >
-              💎 Sponsor Account
-            </button>
+      {/* STATS STRIP (Grid of 4 as per wireframe) */}
+      <div className="stats-strip animate-in" style={{animationDelay: '0.2s'}}>
+        <div className="stat-box">
+          <div className="stat-inner">
+            <div className="stat-label">Total Donated (USDC)</div>
+            <div className="stat-value">${totalDonated}</div>
           </div>
         </div>
-
-        {/* TAB 1: DASHBOARD */}
-        {activeTab === 'dashboard' && (
-          <div className="fade-in-up">
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="stat-title">Total Donated (USDC)</div>
-                <div className="stat-value">${totalDonated}</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-title">Total Parcels Planted</div>
-                <div className="stat-value">{totalPlanted}</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-title">Avg Network NDVI</div>
-                <div className="stat-value">{avgNDVI}</div>
-              </div>
-            </div>
-
-            <h3 style={{marginBottom: '1rem', color: 'var(--leaf-700)'}}>Active Parcels</h3>
-            <div className="parcel-grid">
-              {parcels.length === 0 ? <p>No parcels planted yet.</p> : parcels.map(p => (
-                <div className="parcel-item" key={p.id}>
-                  <div className="parcel-header">
-                    <span className="parcel-id">Parcel #{p.id}</span>
-                    {renderStateBadge(p.state, p.isReleased)}
-                  </div>
-                  <div className="parcel-details">
-                    <div className="detail-row">
-                      <span>Escrowed:</span>
-                      <span className="detail-val">${p.escrowAmount}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span>NDVI Target:</span>
-                      <span className="detail-val">{p.targetNDVI === 0 ? "Not Funded" : p.targetNDVI}</span>
-                    </div>
-                    <div className="detail-row">
-                      <span>Current NDVI:</span>
-                      <span className="detail-val">{p.currentNDVI}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+        <div className="stat-box">
+          <div className="stat-inner">
+            <div className="stat-label">Total Parcels</div>
+            <div className="stat-value">{totalPlanted}</div>
           </div>
-        )}
-
-        {/* TAB 2: PLANT */}
-        {activeTab === 'plant' && (
-          <div className="fade-in-up">
-            <div className="card" style={{maxWidth: '500px'}}>
-              <h2 style={{marginBottom: '1rem'}}>Register New Area</h2>
-              <p style={{color: 'var(--muted)', marginBottom: '1.5rem'}}>
-                As a Worker, you can mint a new Forest NFT which registers a physical plot of land on the blockchain. Once minted, Sponsors can fund it.
-              </p>
+        </div>
+        <div className="stat-box">
+          <div className="stat-inner">
+            <div className="stat-label">Avg Network NDVI</div>
+            <div className="stat-value">{avgNDVI}</div>
+          </div>
+        </div>
+        <div className="stat-box">
+          <div className="stat-inner" style={{justifyContent: 'center', gap: '0.75rem'}}>
+            <div className="stat-label" style={{textAlign: 'center'}}>Active Role</div>
+            <div className="role-selector">
               <button 
-                className="btn btn-primary" 
-                onClick={handlePlant} 
-                disabled={activeRole !== 'worker' || loading}
+                className={`role-pill ${activeRole === 'worker' ? 'active' : ''}`}
+                onClick={() => setActiveRole('worker')}
               >
-                {activeRole !== 'worker' ? 'Switch to Worker Account' : '🌱 Mint New Parcel'}
+                👷 Worker
+              </button>
+              <button 
+                className={`role-pill ${activeRole === 'sponsor' ? 'active' : ''}`}
+                onClick={() => setActiveRole('sponsor')}
+              >
+                💎 Sponsor
               </button>
             </div>
           </div>
-        )}
-
-        {/* TAB 3: FUND */}
-        {activeTab === 'fund' && (
-          <div className="fade-in-up">
-            <div className="card" style={{maxWidth: '500px'}}>
-              <h2 style={{marginBottom: '1rem'}}>Sponsor a Project</h2>
-              <p style={{color: 'var(--muted)', marginBottom: '1.5rem'}}>
-                Deposit USDC into the Escrow contract for a specific Parcel. Funds automatically unlock when Satellite NDVI readings hit the Target.
-              </p>
-              <form onSubmit={handleFund}>
-                <label style={{display:'block', marginBottom:'0.5rem', fontWeight:600}}>Select Parcel ID</label>
-                <select name="parcelId" className="input-field" required>
-                  {parcels.filter(p => p.targetNDVI === 0).map(p => (
-                    <option key={p.id} value={p.id}>Parcel #{p.id} (Unfunded)</option>
-                  ))}
-                  {parcels.filter(p => p.targetNDVI === 0).length === 0 && (
-                    <option value="">No unfunded parcels available</option>
-                  )}
-                </select>
-
-                <label style={{display:'block', marginBottom:'0.5rem', fontWeight:600}}>Deposit Amount (USDC)</label>
-                <input type="number" name="amount" className="input-field" defaultValue="1000" required />
-
-                <label style={{display:'block', marginBottom:'0.5rem', fontWeight:600}}>Target NDVI Release Score (e.g. 600)</label>
-                <input type="number" name="targetNDVI" className="input-field" defaultValue="600" required />
-
-                <button 
-                  type="submit" 
-                  className="btn btn-secondary" 
-                  disabled={activeRole !== 'sponsor' || loading || parcels.filter(p => p.targetNDVI === 0).length === 0}
-                >
-                  {activeRole !== 'sponsor' ? 'Switch to Sponsor Account' : '💰 Deposit Funds'}
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* TAB 4: SATELLITE SIMULATION */}
-        {activeTab === 'satellite' && (
-          <div className="fade-in-up">
-            <div className="card" style={{maxWidth: '600px'}}>
-              <h2 style={{marginBottom: '1rem'}}>Simulate Nature</h2>
-              <p style={{color: 'var(--muted)', marginBottom: '1.5rem'}}>
-                Watch trees grow! Select a funded parcel and start the time simulator. Every 5 seconds equals 6 months of growth, increasing the NDVI score until Escrow is automatically released.
-              </p>
-
-              {simActiveForId !== null ? (
-                <div style={{textAlign: 'center', padding: '2rem 0'}}>
-                  <h3>Running Simulation for Parcel #{simActiveForId}</h3>
-                  <div className="sim-timer">{simMonthsPassed / 12} Years Passed</div>
-                  <p>Check the Activity Log for real-time NDVI Oracle updates!</p>
-                  <button className="btn btn-secondary" style={{marginTop: '1rem'}} onClick={() => { setSimActiveForId(null); setSimMonthsPassed(0); }}>
-                    Stop Simulation
-                  </button>
-                </div>
-              ) : (
-                <div className="parcel-grid" style={{gridTemplateColumns: '1fr'}}>
-                  {parcels.filter(p => p.targetNDVI > 0 && !p.isReleased).map(p => (
-                    <div className="parcel-item" key={p.id} style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <div style={{flex: 1}}>
-                        <h4 style={{fontSize: '1.1rem'}}>Parcel #{p.id}</h4>
-                        <div style={{fontSize: '0.8rem', color: 'var(--muted)'}}>Target NDVI: {p.targetNDVI} | Current: {p.currentNDVI}</div>
-                        <div className="progress-container">
-                          <div className="progress-bar" style={{width: `${Math.min((p.currentNDVI / p.targetNDVI)*100, 100)}%`}}></div>
-                        </div>
-                      </div>
-                      <button className="btn btn-primary" style={{width: 'auto'}} onClick={() => { setSimActiveForId(p.id); setSimMonthsPassed(0); }}>
-                        Start Time
-                      </button>
-                    </div>
-                  ))}
-                  {parcels.filter(p => p.targetNDVI > 0 && !p.isReleased).length === 0 && (
-                    <p>No active funded parcels to simulate.</p>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </main>
-
-      {/* ACTIVITY LOG SIDEBAR */}
-      <aside className="activity-sidebar">
-        <h3 className="activity-title">On-Chain Activity</h3>
-        <div className="activity-list">
-          {logs.length === 0 ? (
-            <p style={{fontSize: '0.85rem', color: 'var(--muted)'}}>No recent activity. Mint a parcel or fund a project to see blockchain logs.</p>
-          ) : (
-            logs.map((log, i) => (
-              <div className="log-item fade-in-up" key={i}>
-                <div className="log-time">{log.time}</div>
-                <div className="log-msg">{log.msg}</div>
-              </div>
-            ))
-          )}
         </div>
-      </aside>
+      </div>
 
-    </div>
+      <main className="main-layout animate-in" style={{animationDelay: '0.3s'}}>
+        
+        {/* LEFT CONTENT AREA */}
+        <div className="content-area">
+          
+          {/* TAB 1: DASHBOARD */}
+          {activeTab === 'dashboard' && (
+            <div className="animate-in">
+              <div className="page-title-box">
+                <h2 className="page-title">Parcels Overview</h2>
+              </div>
+
+              <div className="parcels-grid">
+                {parcels.length === 0 ? (
+                  <div className="card" style={{gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', minHeight: '150px', alignItems: 'center'}}>
+                    <p style={{color: 'var(--muted)'}}>No parcels planted yet.</p>
+                  </div>
+                ) : parcels.map(p => (
+                  <div className="card parcel-card" key={p.id}>
+                    <div className="parcel-header">
+                      <span className="parcel-id">Parcel #{p.id}</span>
+                      {renderStateBadge(p.state, p.isReleased)}
+                    </div>
+                    <div className="parcel-details">
+                      <div className="detail-row">
+                        <span className="detail-label">Escrowed:</span>
+                        <span className="detail-val">${p.escrowAmount}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Target NDVI:</span>
+                        <span className="detail-val">{p.targetNDVI === 0 ? "Not Funded" : p.targetNDVI}</span>
+                      </div>
+                      <div className="detail-row">
+                        <span className="detail-label">Current NDVI:</span>
+                        <span className="detail-val">{p.currentNDVI}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: PLANT */}
+          {activeTab === 'plant' && (
+            <div className="animate-in">
+              <div className="page-title-box">
+                <h2 className="page-title">Register Area</h2>
+              </div>
+              <div className="card" style={{maxWidth: '600px'}}>
+                <p style={{color: 'var(--muted)', marginBottom: '2rem', lineHeight: 1.6}}>
+                  As a Worker, you can mint a new Forest NFT which registers a physical plot of land on the blockchain. Once minted, Sponsors can fund it.
+                </p>
+                <button 
+                  className="btn btn-primary" 
+                  onClick={handlePlant} 
+                  disabled={activeRole !== 'worker' || loading}
+                >
+                  {activeRole !== 'worker' ? 'Switch to Worker Account' : '🌱 Mint New Parcel'}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 3: FUND */}
+          {activeTab === 'fund' && (
+            <div className="animate-in">
+              <div className="page-title-box">
+                <h2 className="page-title">Sponsor Project</h2>
+              </div>
+              <div className="card" style={{maxWidth: '600px'}}>
+                <p style={{color: 'var(--muted)', marginBottom: '2rem', lineHeight: 1.6}}>
+                  Deposit USDC into the Escrow contract for a specific Parcel. Funds automatically unlock when Satellite NDVI readings hit the Target.
+                </p>
+                <form onSubmit={handleFund}>
+                  <label className="input-label">Select Parcel ID</label>
+                  <select name="parcelId" className="input-field" required>
+                    {parcels.filter(p => p.targetNDVI === 0).map(p => (
+                      <option key={p.id} value={p.id}>Parcel #{p.id} (Unfunded)</option>
+                    ))}
+                    {parcels.filter(p => p.targetNDVI === 0).length === 0 && (
+                      <option value="">No unfunded parcels available</option>
+                    )}
+                  </select>
+
+                  <label className="input-label">Deposit Amount (USDC)</label>
+                  <input type="number" name="amount" className="input-field" defaultValue="1000" required />
+
+                  <label className="input-label">Target NDVI Release Score (e.g. 600)</label>
+                  <input type="number" name="targetNDVI" className="input-field" defaultValue="600" required />
+
+                  <button 
+                    type="submit" 
+                    className="btn btn-secondary" 
+                    disabled={activeRole !== 'sponsor' || loading || parcels.filter(p => p.targetNDVI === 0).length === 0}
+                  >
+                    {activeRole !== 'sponsor' ? 'Switch to Sponsor Account' : '💰 Deposit Funds'}
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: SATELLITE SIMULATION */}
+          {activeTab === 'satellite' && (
+            <div className="animate-in">
+              <div className="page-title-box">
+                <h2 className="page-title">Simulate Growth</h2>
+              </div>
+              <div className="card" style={{maxWidth: '700px'}}>
+                <p style={{color: 'var(--muted)', marginBottom: '2rem', lineHeight: 1.6}}>
+                  Watch trees grow! Select a funded parcel and start the time simulator. Every 5 seconds equals 6 months of growth, increasing the NDVI score until Escrow is automatically released.
+                </p>
+
+                {simActiveForId !== null ? (
+                  <div style={{textAlign: 'center', padding: '2rem 0'}}>
+                    <h3 style={{color: 'var(--foreground)'}}>Running Simulation for Parcel #{simActiveForId}</h3>
+                    <div className="sim-timer">{simMonthsPassed / 12} Years Passed</div>
+                    <p style={{color: 'var(--muted)', marginBottom: '2rem'}}>Check the Activity Log for real-time NDVI Oracle updates!</p>
+                    <button className="btn btn-secondary" onClick={() => { setSimActiveForId(null); setSimMonthsPassed(0); }}>
+                      Stop Simulation
+                    </button>
+                  </div>
+                ) : (
+                  <div className="parcels-grid" style={{gridTemplateColumns: '1fr'}}>
+                    {parcels.filter(p => p.targetNDVI > 0 && !p.isReleased).map(p => (
+                      <div className="card" key={p.id} style={{display: 'flex', flexDirection: 'column', gap: '1.5rem', boxShadow: 'none', border: '1px solid var(--border-medium)'}}>
+                        <div>
+                          <h4 style={{fontSize: '1.25rem', color: 'var(--foreground)', marginBottom: '0.5rem'}}>Parcel #{p.id}</h4>
+                          <div style={{fontSize: '0.85rem', color: 'var(--muted)'}}>
+                            Target NDVI: {p.targetNDVI} | Current: <span style={{color: 'var(--foreground)', fontWeight: 600}}>{p.currentNDVI}</span>
+                          </div>
+                          <div className="progress-container">
+                            <div className="progress-bar" style={{width: `${Math.min((p.currentNDVI / p.targetNDVI)*100, 100)}%`}}></div>
+                          </div>
+                        </div>
+                        <button className="btn btn-primary" onClick={() => { setSimActiveForId(p.id); setSimMonthsPassed(0); }}>
+                          Start Time
+                        </button>
+                      </div>
+                    ))}
+                    {parcels.filter(p => p.targetNDVI > 0 && !p.isReleased).length === 0 && (
+                      <p style={{color: 'var(--muted)'}}>No active funded parcels to simulate.</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+        </div>
+
+        {/* RIGHT AREA: ACTIVITY LOG */}
+        <aside className="activity-area">
+          <h3 className="activity-header">On-Chain Activity</h3>
+          <div className="activity-list">
+            {logs.length === 0 ? (
+              <p style={{fontSize: '0.85rem', color: 'var(--muted)', textAlign: 'center', marginTop: '2rem'}}>
+                No recent activity. Mint a parcel or fund a project to see blockchain logs.
+              </p>
+            ) : (
+              logs.map((log, i) => (
+                <div className="log-item" key={i}>
+                  <div className="log-time">{log.time}</div>
+                  <div className="log-msg">{log.msg}</div>
+                </div>
+              ))
+            )}
+          </div>
+        </aside>
+
+      </main>
+    </>
   );
 }
