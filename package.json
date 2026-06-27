@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "node": "npx hardhat node",
+    "deploy:local": "npx hardhat run scripts/deploy-local.js --network localhost",
+    "ui": "cd frontend && npm run dev"
   },
   "repository": {
     "type": "git",
