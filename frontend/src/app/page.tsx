@@ -111,13 +111,14 @@ export default function Home() {
           const parcel = parcels.find(p => p.id === simActiveForId);
           if (!parcel) return;
 
-          const { mockOracle, escrow } = await getContracts(roles.worker);
+          const { escrow } = await getContracts(roles.worker);
+          const { mockOracle: adminOracle } = await getContracts(roles.deployer);
           
           // Increase NDVI
           const increment = Math.floor(Math.random() * 50) + 50; // +50 to +100 per 6mo
           const newScore = Math.min(parcel.currentNDVI + increment, 1000);
           
-          const tx = await mockOracle.updateNDVIScore(simActiveForId, newScore);
+          const tx = await adminOracle.updateNDVIScore(simActiveForId, newScore);
           await tx.wait();
           addLog(`📡 Parcel #${simActiveForId}: Time Passed 6mo. NDVI updated to ${newScore}`);
 
@@ -158,7 +159,8 @@ export default function Home() {
 
   const handleFund = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const id = Number(fd.get("parcelId"));
     const amt = fd.get("amount") as string;
     const target = Number(fd.get("targetNDVI"));
@@ -178,7 +180,7 @@ export default function Home() {
 
       addLog(`✅ Funded Parcel #${id} successfully!`);
       await loadParcels();
-      e.currentTarget.reset();
+      form.reset();
     } catch (e: any) {
       addLog(`❌ Fund failed: ${e.message}`);
     } finally {
