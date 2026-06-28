@@ -29,7 +29,7 @@ async function waitForNode(url, maxAttempts = 30) {
 
 async function main() {
   console.log("\n====================================================");
-  console.log("  🌿  MEW - Mostar Eco View  |  Local Dev Launcher");
+  console.log("   MEW - Mostar Eco View  |  Local Dev Launcher");
   console.log("====================================================\n");
 
   // Step 1: Install frontend dependencies if needed
